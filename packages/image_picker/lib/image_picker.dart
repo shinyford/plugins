@@ -15,6 +15,9 @@ enum ImageSource {
 
   /// Opens the user's photo gallery.
   gallery,
+
+  /// Opens up the front camera, letting the user to take a new picture.
+  selfie,
 }
 
 class ImagePicker {

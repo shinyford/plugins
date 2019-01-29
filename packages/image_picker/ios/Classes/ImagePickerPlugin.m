@@ -13,6 +13,7 @@
 
 static const int SOURCE_CAMERA = 0;
 static const int SOURCE_GALLERY = 1;
+static const int SOURCE_SELFIE = 2;
 
 @implementation FLTImagePickerPlugin {
   FlutterResult _result;
@@ -63,6 +64,9 @@ static const int SOURCE_GALLERY = 1;
       case SOURCE_CAMERA:
         [self showCamera];
         break;
+      case SOURCE_SELFIE:
+        [self showSelfieCamera];
+        break;
       case SOURCE_GALLERY:
         [self showPhotoLibrary];
         break;
@@ -88,6 +92,7 @@ static const int SOURCE_GALLERY = 1;
 
     switch (imageSource) {
       case SOURCE_CAMERA:
+      case SOURCE_SELFIE:
         [self showCamera];
         break;
       case SOURCE_GALLERY:
@@ -106,7 +111,25 @@ static const int SOURCE_GALLERY = 1;
 
 - (void)showCamera {
   // Camera is not available on simulators
-  if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+  if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] &&
+      [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
+    _imagePickerController.cameraDevice = UIImagePickerController.CameraDevice.rear;
+    _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [_viewController presentViewController:_imagePickerController animated:YES completion:nil];
+  } else {
+    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                message:@"Camera not available."
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
+  }
+}
+
+- (void)showSelfieCamera {
+  // Camera is not available on simulators
+  if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] &&
+      [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront]) {
+    _imagePickerController.cameraDevice = UIImagePickerController.CameraDevice.front;
     _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
     [_viewController presentViewController:_imagePickerController animated:YES completion:nil];
   } else {
