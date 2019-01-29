@@ -113,7 +113,7 @@ static const int SOURCE_SELFIE = 2;
   // Camera is not available on simulators
   if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] &&
       [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
-    _imagePickerController.cameraDevice = UIImagePickerController.CameraDevice.rear;
+    _imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
     _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
     [_viewController presentViewController:_imagePickerController animated:YES completion:nil];
   } else {
@@ -129,7 +129,7 @@ static const int SOURCE_SELFIE = 2;
   // Camera is not available on simulators
   if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] &&
       [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront]) {
-    _imagePickerController.cameraDevice = UIImagePickerController.CameraDevice.front;
+    _imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
     _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
     [_viewController presentViewController:_imagePickerController animated:YES completion:nil];
   } else {
