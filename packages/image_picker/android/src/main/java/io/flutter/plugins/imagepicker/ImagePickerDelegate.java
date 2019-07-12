@@ -11,7 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-// import android.os.Build;
+import android.os.Build;
 import android.provider.MediaStore;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.ActivityCompat;
@@ -339,11 +339,13 @@ public class ImagePickerDelegate
     Uri imageUri = fileUriResolver.resolveFileProviderUriForFile(fileProviderName, imageFile);
     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
     if (useFrontCamera) {
-      // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        intent.putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
         intent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
-      // } else {
+        intent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+      } else {
         intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
-      // }
+      }
     }
     grantUriPermissions(intent, imageUri);
 
