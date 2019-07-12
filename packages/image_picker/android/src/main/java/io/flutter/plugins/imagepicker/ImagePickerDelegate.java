@@ -403,7 +403,7 @@ public class ImagePickerDelegate
         break;
       case REQUEST_CAMERA_IMAGE_PERMISSION:
         if (permissionGranted) {
-          launchTakeImageWithCameraIntent();
+          launchTakeImageWithCameraIntent(false);
         }
         break;
       case REQUEST_CAMERA_VIDEO_PERMISSION:
