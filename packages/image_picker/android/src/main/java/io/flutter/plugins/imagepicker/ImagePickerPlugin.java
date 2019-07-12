@@ -148,6 +148,7 @@ public class ImagePickerPlugin implements MethodChannel.MethodCallHandler {
       rawResult.error("no_activity", "image_picker plugin requires a foreground activity.", null);
       return;
     }
+
     MethodChannel.Result result = new MethodResultWrapper(rawResult);
     int imageSource;
     switch (call.method) {

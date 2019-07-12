@@ -307,10 +307,8 @@ public class ImagePickerDelegate
       return;
     }
 
-    if (needRequestCameraPermission()
-        && !permissionManager.isPermissionGranted(Manifest.permission.CAMERA)) {
-      permissionManager.askForPermission(
-          Manifest.permission.CAMERA, REQUEST_CAMERA_IMAGE_PERMISSION);
+    if (!permissionManager.isPermissionGranted(Manifest.permission.CAMERA)) {
+      permissionManager.askForPermission(Manifest.permission.CAMERA, REQUEST_CAMERA_IMAGE_PERMISSION);
       return;
     }
 
@@ -344,6 +342,44 @@ public class ImagePickerDelegate
       } else {
         intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
       }
+    }
+    grantUriPermissions(intent, imageUri);
+
+    activity.startActivityForResult(intent, REQUEST_CODE_TAKE_IMAGE_WITH_CAMERA);
+  }
+
+  public void takeImageWithSelfieCamera(MethodCall methodCall, MethodChannel.Result result) {
+    if (!setPendingMethodCallAndResult(methodCall, result)) {
+      finishWithAlreadyActiveError();
+      return;
+    }
+
+    if (!permissionManager.isPermissionGranted(Manifest.permission.CAMERA)) {
+      permissionManager.askForPermission(Manifest.permission.CAMERA, REQUEST_CAMERA_IMAGE_PERMISSION);
+      return;
+    }
+
+    launchTakeImageWithSelfieCameraIntent();
+  }
+
+  private void launchTakeImageWithSelfieCameraIntent() {
+    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    boolean canTakePhotos = intentResolver.resolveActivity(intent);
+
+    if (!canTakePhotos) {
+      finishWithError("no_available_camera", "No cameras available for taking pictures.");
+      return;
+    }
+
+    File imageFile = createTemporaryWritableImageFile();
+    pendingCameraMediaUri = Uri.parse("file:" + imageFile.getAbsolutePath());
+
+    Uri imageUri = fileUriResolver.resolveFileProviderUriForFile(fileProviderName, imageFile);
+    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+      intent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
+    } else {
+      intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
     }
     grantUriPermissions(intent, imageUri);
 

@@ -19,7 +19,7 @@ enum ImageSource {
   /// Opens the user's photo gallery.
   gallery,
 
-  /// Opens up the device front camera, letting the user to take a new selfie.
+  /// Opens up the device front camera, letting the user take a new selfie.
   selfie,
 }
 

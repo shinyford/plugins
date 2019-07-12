@@ -74,6 +74,9 @@ static const int SOURCE_SELFIE = 2;
       case SOURCE_SELFIE:
         [self checkSelfieCameraAuthorization];
         break;
+      case SOURCE_SELFIE:
+        [self showSelfieCamera];
+        break;
       case SOURCE_GALLERY:
         [self checkPhotoAuthorization];
         break;
